@@ -94,6 +94,5 @@ See [ROADMAP.md](ROADMAP.md).
 
 ## License
 
-Code is [MIT](LICENSE). The app icon is the author's personal mark and isn't
-covered by that license; forks should use their own. Weather data by [Open-Meteo](https://open-meteo.com), licensed
+[MIT](LICENSE). Weather data by [Open-Meteo](https://open-meteo.com), licensed
 under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
