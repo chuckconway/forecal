@@ -16,7 +16,7 @@ mkdir -p "$APP/Contents/MacOS"
 cp .build/release/ForeCal "$APP/Contents/MacOS/"
 cp Resources/Info.plist "$APP/Contents/"
 mkdir -p "$APP/Contents/Resources"
-cp Resources/AppIcon.icns "$APP/Contents/Resources/"
+cp Resources/AppIcon.icns Resources/AboutIcon-*.png "$APP/Contents/Resources/"
 
 # Hardened runtime everywhere, so local builds run under the same rules as
 # releases; the entitlements let it through to calendars and location.

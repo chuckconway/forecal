@@ -8,12 +8,17 @@ struct AboutView: View {
     static let repository = URL(string: "https://github.com/chuckconway/forecal")!
 
     let done: () -> Void
+    @Environment(\.colorScheme) private var colorScheme
+
+    /// The morning icon in light mode and the night one in dark mode. Finder
+    /// can't switch like this (that needs Xcode's asset compiler), so it
+    /// always shows the morning icon.
+    private var icon: NSImage {
+        NSImage(named: colorScheme == .dark ? "AboutIcon-Dark" : "AboutIcon-Light") ?? NSApp.applicationIconImage
+    }
 
     private var version: String {
-        let info = Bundle.main.infoDictionary
-        let short = info?["CFBundleShortVersionString"] as? String ?? "?"
-        let build = info?["CFBundleVersion"] as? String ?? "?"
-        return "Version \(short) (\(build))"
+        "Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "?")"
     }
 
     var body: some View {
@@ -33,7 +38,7 @@ struct AboutView: View {
             Theme.separator.frame(height: 1)
 
             VStack(spacing: 6) {
-                Image(nsImage: NSApp.applicationIconImage)
+                Image(nsImage: icon)
                     .resizable()
                     .frame(width: 72, height: 72)
                 Text("ForeCal")

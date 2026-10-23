@@ -1,0 +1,19 @@
+<!-- ForeCal at night, for dark mode in the About screen. Same layout as AppIcon.svg. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <clipPath id="tile"><rect x="100" y="100" width="824" height="824" rx="185"/></clipPath>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2E4FD8"/><stop offset="0.6" stop-color="#8A6BE0"/><stop offset="1" stop-color="#FF9E6B"/>
+    </linearGradient>
+  </defs>
+  <g clip-path="url(#tile)">
+    <rect x="100" y="100" width="824" height="460" fill="url(#sky)"/>
+    <circle cx="512" cy="560" r="150" fill="#FFD43B"/>
+    <rect x="100" y="560" width="824" height="364" fill="#161B33"/>
+    <g fill="#3A4370">
+      <rect x="190" y="620" width="70" height="70" rx="16"/><rect x="290" y="620" width="70" height="70" rx="16"/><rect x="390" y="620" width="70" height="70" rx="16"/><rect x="490" y="620" width="70" height="70" rx="16"/><rect x="590" y="620" width="70" height="70" rx="16"/><rect x="690" y="620" width="70" height="70" rx="16"/><rect x="790" y="620" width="70" height="70" rx="16"/>
+      <rect x="190" y="720" width="70" height="70" rx="16"/><rect x="290" y="720" width="70" height="70" rx="16"/><rect x="390" y="720" width="70" height="70" rx="16"/><rect x="590" y="720" width="70" height="70" rx="16"/><rect x="690" y="720" width="70" height="70" rx="16"/><rect x="790" y="720" width="70" height="70" rx="16"/>
+    </g>
+    <rect x="490" y="720" width="70" height="70" rx="16" fill="#FFD43B"/>
+  </g>
+</svg>
