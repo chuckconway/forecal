@@ -63,6 +63,11 @@ final class WeatherStore: ObservableObject {
         forecastByDay[day]
     }
 
+    /// Stand-in forecasts for snapshots. With no location, live fetches never run.
+    func showSample(_ forecasts: [Date: DailyForecast]) {
+        forecastByDay = forecasts
+    }
+
     private func update(location: CLLocation) {
         // Ignore small moves; the forecast won't change.
         if let coordinate, coordinate.distance(from: location) < 5_000 { return }

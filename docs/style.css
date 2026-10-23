@@ -1,0 +1,147 @@
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f4f7fb;
+  --text: #111114;
+  --text-2: #4b4b52;
+  --line: #dce3ee;
+  --accent: #2f6fe4;
+  --accent-text: #ffffff;
+  --sun: #ff9f1c;
+  --sky-top: #3d8bff;
+  --sky-bottom: #bfe0ff;
+  --card: #ffffff;
+  --shadow: 0 1px 2px rgba(17, 24, 39, .06), 0 8px 24px rgba(17, 24, 39, .08);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #141416;
+    --bg-soft: #1c1c20;
+    --text: #f5f5f7;
+    --text-2: #b4b4ba;
+    --line: #34343a;
+    --accent: #5b9dff;
+    --accent-text: #0b1020;
+    --sky-top: #1f3c8f;
+    --sky-bottom: #3d4f8a;
+    --card: #1e1e22;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .35);
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 17px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+}
+a { color: var(--accent); }
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+/* Hero: a morning sky that warms toward the horizon, like the icon. */
+.hero {
+  background: linear-gradient(180deg, var(--sky-top), var(--sky-bottom) 70%, var(--bg));
+  padding: 64px 0 32px;
+  text-align: center;
+  color: #fff;
+}
+.hero img.icon { width: 120px; height: 120px; filter: drop-shadow(0 10px 24px rgba(0, 0, 0, .18)); }
+.hero h1 { font-size: 56px; line-height: 1.05; margin: 12px 0 8px; letter-spacing: -1px; font-weight: 800; }
+.hero p.lede { font-size: 22px; margin: 0 auto; max-width: 560px; opacity: .95; }
+.actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 28px 0 8px; }
+.button {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 22px; border-radius: 999px;
+  font-weight: 600; text-decoration: none; font-size: 16px;
+}
+.button.primary { background: #fff; color: #1b3f9a; }
+.button.secondary { background: rgba(255, 255, 255, .18); color: #fff; border: 1px solid rgba(255, 255, 255, .5); }
+.hero .note { font-size: 14px; opacity: .85; margin-top: 10px; }
+
+.shots { display: flex; gap: 28px; justify-content: center; flex-wrap: wrap; margin-top: 36px; }
+.shots img { width: 340px; max-width: 100%; height: auto; border-radius: 14px; box-shadow: var(--shadow); background: var(--card); }
+
+section { padding: 64px 0; }
+section.soft { background: var(--bg-soft); }
+h2 { font-size: 34px; letter-spacing: -.5px; margin: 0 0 12px; line-height: 1.15; }
+.intro { color: var(--text-2); font-size: 19px; max-width: 680px; margin: 0 0 32px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 20px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px; }
+.card h3 { margin: 6px 0 6px; font-size: 19px; }
+.card p { margin: 0; color: var(--text-2); font-size: 16px; }
+.card .glyph { font-size: 26px; }
+
+/* Mock menu bar statuses. */
+.bar { display: flex; flex-direction: column; gap: 12px; max-width: 520px; }
+.status {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px;
+}
+.status code { font: 600 15px/1.3 -apple-system, BlinkMacSystemFont, sans-serif; color: var(--text); }
+.status span { color: var(--text-2); font-size: 15px; text-align: right; }
+
+.privacy { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+.privacy ul { margin: 0; padding-left: 20px; color: var(--text-2); }
+.privacy li { margin-bottom: 8px; }
+
+pre {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 16px 18px; overflow-x: auto; font-size: 14px; line-height: 1.6;
+}
+footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--text-2); font-size: 15px; }
+footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+@media (max-width: 600px) {
+  body { font-size: 16px; }
+  .hero { padding-top: 44px; }
+  .hero h1 { font-size: 42px; }
+  .hero p.lede { font-size: 19px; }
+  h2 { font-size: 28px; }
+  section { padding: 48px 0; }
+  .status { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .status span { text-align: left; }
+}
+
+/* Site navigation. */
+.nav { position: absolute; top: 0; left: 0; right: 0; }
+.nav .wrap { display: flex; justify-content: flex-end; gap: 20px; padding-top: 16px; }
+.nav a { color: #fff; text-decoration: none; font-weight: 600; font-size: 15px; opacity: .9; }
+.nav a:hover { opacity: 1; text-decoration: underline; }
+.hero { position: relative; }
+
+/* User guide. */
+.guide-hero { background: linear-gradient(180deg, var(--sky-top), color-mix(in srgb, var(--sky-top) 80%, var(--sky-bottom))); color: #fff; padding: 56px 0 40px; position: relative; }
+.guide-hero h1 { font-size: 44px; margin: 0 0 6px; letter-spacing: -.8px; }
+.guide-hero p { margin: 0; font-size: 19px; opacity: .95; }
+.guide-hero .brand { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-weight: 700; margin-bottom: 18px; }
+.guide-hero .brand img { width: 36px; height: 36px; }
+.guide { display: grid; grid-template-columns: 220px 1fr; gap: 48px; padding-top: 40px; padding-bottom: 72px; }
+.toc { position: sticky; top: 20px; align-self: start; font-size: 15px; }
+.toc ol { list-style: none; margin: 0; padding: 0; }
+.toc li { margin: 0 0 8px; }
+.toc a { color: var(--text-2); text-decoration: none; }
+.toc a:hover { color: var(--accent); }
+.doc { min-width: 0; }
+.doc h2 { font-size: 28px; margin: 48px 0 12px; padding-top: 8px; scroll-margin-top: 16px; }
+.doc h2:first-child { margin-top: 0; }
+.doc h3 { font-size: 20px; margin: 28px 0 8px; }
+.doc p, .doc li { color: var(--text); }
+.doc .muted { color: var(--text-2); }
+.doc table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 16px; }
+.doc th, .doc td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.doc th { color: var(--text-2); font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: .4px; }
+.doc code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; }
+.doc pre code { background: none; border: 0; padding: 0; }
+.doc .figure { margin: 16px 0 24px; }
+.doc .figure img { width: 300px; max-width: 100%; height: auto; border-radius: 12px; box-shadow: var(--shadow); }
+.callout { background: var(--bg-soft); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 10px; padding: 14px 16px; margin: 16px 0; }
+.callout p { margin: 0; }
+.doc dl dt { font-weight: 700; margin-top: 18px; }
+.doc dl dd { margin: 4px 0 0; color: var(--text-2); }
+.table-scroll { overflow-x: auto; }
+@media (max-width: 800px) {
+  .guide { grid-template-columns: 1fr; gap: 24px; }
+  .toc { position: static; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+  .guide-hero h1 { font-size: 34px; }
+}

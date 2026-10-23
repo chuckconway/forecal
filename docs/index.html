@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ForeCal: a menu bar calendar that looks ahead</title>
+<meta name="description" content="A free, open-source macOS menu bar calendar: your events, the weather, and when to leave.">
+<meta property="og:title" content="ForeCal">
+<meta property="og:description" content="A free, open-source macOS menu bar calendar: your events, the weather, and when to leave.">
+<meta property="og:image" content="https://chuckconway.github.io/forecal/icon.png">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="hero">
+  <nav class="nav"><div class="wrap"><a href="guide.html">User Guide</a><a href="https://github.com/chuckconway/forecal">GitHub</a></div></nav>
+  <div class="wrap">
+    <img class="icon" src="icon.png" alt="ForeCal icon: a sun rising over a week of calendar days">
+    <h1>ForeCal</h1>
+    <p class="lede">A menu bar calendar for your Mac that looks ahead: your events, the weather, and when to leave.</p>
+    <div class="actions">
+      <a class="button primary" href="https://github.com/chuckconway/forecal#build-from-source">Get ForeCal</a>
+      <a class="button secondary" href="https://github.com/chuckconway/forecal">View on GitHub</a>
+    </div>
+    <p class="note">Free and open source · macOS 14 Sonoma or later · Signed downloads coming soon</p>
+    <div class="shots">
+      <picture>
+        <source srcset="panel-dark.png" media="(prefers-color-scheme: dark)">
+        <img src="panel-light.png" width="340" height="704" alt="ForeCal's panel: a month grid above a scrolling agenda with weather, Join buttons, and leave-by times">
+      </picture>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>What's next, at a glance</h2>
+    <p class="intro">The menu bar tells you what matters right now, so you rarely need to open anything.</p>
+    <div class="bar">
+      <div class="status"><code>🚗 Leave in 12m</code><span>Time to head out to an in-person event</span></div>
+      <div class="status"><code>Design review · 25m</code><span>Something starts within half an hour</span></div>
+      <div class="status"><code>Planning · ends 3:00 PM</code><span>You're in an event</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="soft">
+  <div class="wrap">
+    <h2>Everything your day needs, nothing it doesn't</h2>
+    <p class="intro">ForeCal shows the calendars you already have in macOS Calendar: iCloud, Google, Exchange, and more.</p>
+    <div class="grid">
+      <div class="card"><div class="glyph">🚗</div><h3>Leave-by times</h3><p>Drive times from Apple Maps, with traffic, for in-person events in the next two days. A Directions button opens the route.</p></div>
+      <div class="card"><div class="glyph">⛅️</div><h3>Weather for every day</h3><p>Highs, lows, and the chance of rain, 16 days out, right in your agenda.</p></div>
+      <div class="card"><div class="glyph">🎥</div><h3>One-click Join</h3><p>Zoom, Google Meet, Teams, Webex, FaceTime, and more get a Join button.</p></div>
+      <div class="card"><div class="glyph">🗓️</div><h3>Grid and list in sync</h3><p>Scroll the agenda and the month follows. Click a day and the agenda jumps there. Headers stay pinned.</p></div>
+      <div class="card"><div class="glyph">🕒</div><h3>A now line</h3><p>Today's list shows the current time and how long until your next event.</p></div>
+      <div class="card"><div class="glyph">🎨</div><h3>Yours to tune</h3><p>Choose which calendars appear and the color for today. Light and dark mode follow your Mac.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap privacy">
+    <div>
+      <h2>Private by design</h2>
+      <p class="intro">No account, no server, no analytics. ForeCal only reads your calendars; it never changes them.</p>
+    </div>
+    <div class="card">
+      <h3>What leaves your Mac</h3>
+      <ul>
+        <li><strong>Weather:</strong> your location, rounded to about 1 km, goes to Open-Meteo.</li>
+        <li><strong>Drive times:</strong> your location and the addresses of upcoming in-person events go to Apple Maps.</li>
+        <li><strong>Everything else</strong>, from titles to notes to attendees, stays on your Mac.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="soft" id="get">
+  <div class="wrap">
+    <h2>Get ForeCal</h2>
+    <p class="intro">Signed, notarized downloads are coming soon on the <a href="https://github.com/chuckconway/forecal/releases">releases page</a>. Until then, build it from source in about a minute with Xcode or the Command Line Tools:</p>
+<pre><code>git clone https://github.com/chuckconway/forecal.git
+cd forecal
+./build.sh --install</code></pre>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>ForeCal is free and open source under the MIT License.</span>
+    <span><a href="guide.html">User Guide</a> · <a href="https://github.com/chuckconway/forecal">GitHub</a> · <a href="https://github.com/chuckconway/forecal/issues">Report an issue</a> · Weather by <a href="https://open-meteo.com">Open-Meteo</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ForeCal User Guide</title>
+<meta name="description" content="How to install and use ForeCal, how it connects to your calendars, what it needs, and what to do when something doesn't work.">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="guide-hero">
+  <nav class="nav"><div class="wrap"><a href="index.html">Home</a><a href="https://github.com/chuckconway/forecal">GitHub</a></div></nav>
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="icon.png" alt="">ForeCal</a>
+    <h1>User Guide</h1>
+    <p>Install ForeCal, connect your calendars, and get the most out of it.</p>
+  </div>
+</header>
+
+<div class="wrap guide">
+  <nav class="toc" aria-label="Contents">
+    <ol>
+      <li><a href="#requirements">Requirements</a></li>
+      <li><a href="#install">Install</a></li>
+      <li><a href="#first-launch">First launch</a></li>
+      <li><a href="#calendars">How it connects to your calendars</a></li>
+      <li><a href="#using">Using ForeCal</a></li>
+      <li><a href="#menu-bar">The menu bar status</a></li>
+      <li><a href="#leave-by">Leave-by times</a></li>
+      <li><a href="#weather">Weather</a></li>
+      <li><a href="#join">Join buttons</a></li>
+      <li><a href="#settings">Settings</a></li>
+      <li><a href="#privacy">Privacy and permissions</a></li>
+      <li><a href="#troubleshooting">Troubleshooting</a></li>
+      <li><a href="#uninstall">Uninstall</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ol>
+  </nav>
+
+  <main class="doc">
+
+    <h2 id="requirements">Requirements</h2>
+    <ul>
+      <li><strong>macOS 14 Sonoma or later.</strong></li>
+      <li><strong>A Mac with Apple silicon or Intel.</strong> Releases are universal.</li>
+      <li><strong>Calendars set up in macOS.</strong> ForeCal shows what the built-in Calendar app shows. See <a href="#calendars">How it connects to your calendars</a>.</li>
+      <li><strong>An internet connection</strong> for weather and drive times. Your calendar works offline, as long as macOS has synced it.</li>
+    </ul>
+    <p>To check your macOS version, choose Apple menu › About This Mac.</p>
+
+    <h2 id="install">Install</h2>
+    <h3>Download</h3>
+    <div class="callout"><p>Signed, notarized downloads are coming soon on the <a href="https://github.com/chuckconway/forecal/releases">releases page</a>. Until then, use <a href="#build">Build from source</a>.</p></div>
+    <ol>
+      <li>Download <code>ForeCal.zip</code> from the <a href="https://github.com/chuckconway/forecal/releases/latest">latest release</a>.</li>
+      <li>Open the zip to unpack <strong>ForeCal</strong>.</li>
+      <li>Drag ForeCal into your <strong>Applications</strong> folder.</li>
+      <li>Open it. macOS asks to confirm you want to open an app downloaded from the internet; click <strong>Open</strong>. ForeCal is signed and notarized by Apple, so you won't see a security warning.</li>
+    </ol>
+
+    <h3 id="build">Build from source</h3>
+    <p>You need Xcode or Apple's Command Line Tools. If you have neither, install the tools (a few minutes, no Apple account needed):</p>
+<pre><code>xcode-select --install</code></pre>
+    <p>Then build and install ForeCal:</p>
+<pre><code>git clone https://github.com/chuckconway/forecal.git
+cd forecal
+./build.sh --install</code></pre>
+    <p>This builds <code>ForeCal.app</code>, copies it to the Applications folder in your home folder, and opens it. To update later, run <code>git pull</code> and <code>./build.sh --install</code> again.</p>
+    <p class="muted">Builds from source are signed ad hoc, which macOS treats as a new app each time, so it asks for calendar and location access again after every rebuild. The <a href="https://github.com/chuckconway/forecal#build-from-source">README</a> explains how to avoid that.</p>
+
+    <h2 id="first-launch">First launch</h2>
+    <p>ForeCal is a menu bar app: it doesn't open a window or appear in the Dock. Look for <strong>today's date in the menu bar</strong>, near the clock, as a small calendar page with the day number. Click it to open ForeCal.</p>
+    <p>The first time it runs, ForeCal asks for two permissions:</p>
+    <table>
+      <thead><tr><th>Permission</th><th>Needed for</th><th>What to choose</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Calendars</strong></td><td>Showing your events. Required.</td><td><strong>Allow Full Access.</strong> ForeCal only reads; it never changes anything.</td></tr>
+        <tr><td><strong>Location</strong></td><td>Weather and drive times. Optional.</td><td><strong>Allow</strong>, or decline and use ForeCal without weather and drive times.</td></tr>
+      </tbody>
+    </table>
+    <p>To have ForeCal start when you log in, open it, click the gear at the bottom right, and choose <strong>Launch at Login</strong>.</p>
+    <div class="callout"><p><strong>Don't see the date in the menu bar?</strong> On Macs with a notch, a crowded menu bar hides items that don't fit. Quit an app or two with menu bar items, or check System Settings › Menu Bar (macOS 26 and later) and make sure ForeCal is allowed.</p></div>
+
+    <h2 id="calendars">How it connects to your calendars</h2>
+    <p>ForeCal doesn't sign in to anything. It reads the calendars macOS already keeps, through Apple's EventKit framework, the same way the built-in Calendar app does. <strong>If an event shows in Calendar, it shows in ForeCal.</strong></p>
+    <h3>Add an account</h3>
+    <p>To see a Google, Microsoft 365, Exchange, Yahoo, or other calendar, add the account to macOS:</p>
+    <ol>
+      <li>Open <strong>System Settings › Internet Accounts</strong> (or, in Calendar, choose Calendar › Settings › Accounts).</li>
+      <li>Click <strong>Add Account</strong>, pick the provider, and sign in.</li>
+      <li>Turn on <strong>Calendars</strong> for that account.</li>
+    </ol>
+    <p>iCloud calendars appear automatically if you're signed in to iCloud with Calendars turned on. Subscribed calendars (holidays, sports schedules, school calendars) appear too: add them in Calendar with File › New Calendar Subscription.</p>
+    <h3>What ForeCal shows</h3>
+    <ul>
+      <li><strong>Every calendar macOS has,</strong> grouped by account. Hide the ones you don't want with <a href="#settings">Choose Calendars</a>.</li>
+      <li><strong>Changes right away.</strong> When an event is added or changed, on your Mac or synced from another device, ForeCal updates immediately.</li>
+      <li><strong>Events only.</strong> Reminders and to-dos aren't shown.</li>
+      <li><strong>Declined and canceled meetings</strong> are left out of the menu bar status, so it never tells you to join a meeting you said no to.</li>
+    </ul>
+    <h3>Read-only</h3>
+    <p>ForeCal never creates, edits, or deletes events. To change something, click <strong>Open Calendar</strong> at the bottom of the panel.</p>
+
+    <h2 id="using">Using ForeCal</h2>
+    <div class="figure"><img src="panel-light.png" width="340" height="704" alt="The ForeCal panel: month grid, today's agenda with weather, a Join button, and leave-by times"></div>
+    <p>The panel has two parts: a <strong>month grid</strong> at the top and an <strong>agenda</strong> below it that scrolls a year back and a year ahead.</p>
+    <div class="table-scroll">
+    <table>
+      <thead><tr><th>To</th><th>Do this</th></tr></thead>
+      <tbody>
+        <tr><td>Open ForeCal</td><td>Click the date in the menu bar.</td></tr>
+        <tr><td>Go to another month</td><td>Click <strong>‹</strong> or <strong>›</strong> next to the month, or scroll the agenda.</td></tr>
+        <tr><td>Go back to today</td><td>Click <strong>Today</strong>.</td></tr>
+        <tr><td>Jump to a day</td><td>Click it in the grid. The agenda scrolls to it.</td></tr>
+        <tr><td>See an event's details</td><td>Click the event to show its calendar, attendees, notes, and link. Click again to collapse it.</td></tr>
+        <tr><td>Join a video call</td><td>Click <strong>Join</strong>.</td></tr>
+        <tr><td>Get directions</td><td>Click <strong>Directions</strong> to open the route in Maps.</td></tr>
+        <tr><td>Open macOS Calendar</td><td>Click <strong>Open Calendar</strong>.</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <h3>Reading the panel</h3>
+    <ul>
+      <li><strong>Dots</strong> under a date show which calendars have events that day, in each calendar's color.</li>
+      <li><strong>The highlighted week</strong> in the grid is the one at the top of the agenda. Scrolling the agenda moves it.</li>
+      <li><strong>A ring</strong> around a date in the grid means the pointer is over that day in the agenda. Over an event, the ring takes that event's calendar color.</li>
+      <li><strong>Day headers</strong> stay pinned to the top while you scroll through that day.</li>
+      <li><strong>The now line</strong> in today's list shows the current time and how long until your next event.</li>
+      <li><strong>Dimmed events</strong> are over.</li>
+      <li><strong>Colored pills</strong> at the top of a day are all-day events.</li>
+    </ul>
+
+    <h2 id="menu-bar">The menu bar status</h2>
+    <p>Next to the date, the menu bar shows what matters right now, so you rarely need to open the panel. It shows one thing at a time, in this order:</p>
+    <table>
+      <thead><tr><th>Shows</th><th>When</th></tr></thead>
+      <tbody>
+        <tr><td><code>🚗 Leave in 12m</code>, then <code>🚗 Leave now</code></td><td>It's within 30 minutes of when you need to leave for an in-person event.</td></tr>
+        <tr><td><code>Design review · 25m</code>, then <code>· now</code></td><td>An event starts within 30 minutes.</td></tr>
+        <tr><td><code>Planning · ends 3:00 PM</code></td><td>You're in an event. Long blocks of 8 hours or more, like "Work" or "Vacation", are skipped.</td></tr>
+        <tr><td>Just the date</td><td>Nothing is coming up.</td></tr>
+      </tbody>
+    </table>
+    <p>Long titles are shortened. The status updates every minute, and catches up as soon as your Mac wakes from sleep. Countdowns round up, so "1m" always means the event hasn't started.</p>
+
+    <h2 id="leave-by">Leave-by times</h2>
+    <p>For in-person events in the next 48 hours, ForeCal asks Apple Maps how long the drive is from where you are, with current traffic. The event shows a badge such as <strong>Leave by 8:33 AM · 42 min</strong>, which turns orange in the hour before you need to leave, and a <strong>Directions</strong> button.</p>
+    <h3>Which events get one</h3>
+    <ul>
+      <li><strong>Timed events with a location that reads as a place:</strong> an address, a business, a landmark. ForeCal looks up the place by name, so a full address is the most reliable.</li>
+      <li><strong>Not online events:</strong> locations that are links, or that mention Zoom, Teams, Google Meet, Webex, FaceTime, online, virtual, phone, or conference call.</li>
+      <li><strong>Not rooms or placeholders:</strong> locations mentioning room, TBD, or TBA.</li>
+      <li><strong>Only trips between 5 minutes and 4 hours.</strong> Shorter means you're already there; longer is usually a flight or a wrong match.</li>
+    </ul>
+    <h3>How fresh they are</h3>
+    <p>Drive times refresh every 10 minutes for events starting in the next two hours, and every hour otherwise. They also refresh when you've moved more than 1 km. Leave-by times are rounded down to the minute, so they're never late.</p>
+
+    <h2 id="weather">Weather</h2>
+    <p>Each day header in the agenda shows that day's forecast for where you are: an icon, the high, the low, and the chance of rain when it's 30% or more. Forecasts reach 16 days ahead and refresh hourly, or when you've moved more than 5 km. Temperatures are in °F or °C, following your Mac's region settings.</p>
+    <p>Weather comes from <a href="https://open-meteo.com">Open-Meteo</a>, a free, open forecast service.</p>
+
+    <h2 id="join">Join buttons</h2>
+    <p>When an event has a video call link in its URL, location, or notes, ForeCal adds a <strong>Join</strong> button. It recognizes Zoom, Google Meet, Microsoft Teams, Webex, FaceTime, Whereby, Amazon Chime, and GoToMeeting. Join buttons disappear once an event is over.</p>
+
+    <h2 id="settings">Settings</h2>
+    <p>Click the gear at the bottom right of the panel.</p>
+    <dl>
+      <dt>Choose Calendars…</dt>
+      <dd>Every calendar, grouped by account. Check or uncheck calendars, or use Show All and Hide All for a whole account. Click Done to return.</dd>
+      <dt>Today Color</dt>
+      <dd>The color that marks today in the grid and agenda: red, blue, or indigo.</dd>
+      <dt>Launch at Login</dt>
+      <dd>Start ForeCal automatically when you log in.</dd>
+      <dt>About ForeCal</dt>
+      <dd>The version, what data leaves your Mac, and a link to the source code.</dd>
+      <dt>Quit ForeCal</dt>
+      <dd>Quits the app. Open it again from your Applications folder.</dd>
+    </dl>
+    <p>Light and dark mode follow your Mac's appearance setting.</p>
+
+    <h2 id="privacy">Privacy and permissions</h2>
+    <p>ForeCal has no server, account, analytics, or tracking. It never uploads your calendars. Two things leave your Mac:</p>
+    <table>
+      <thead><tr><th>Sent</th><th>To</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Your location, rounded to about 1 km</td><td><a href="https://open-meteo.com">Open-Meteo</a></td><td>The weather forecast, about once an hour.</td></tr>
+        <tr><td>Your location, and the location text of in-person events in the next 48 hours</td><td>Apple Maps</td><td>Finding the place and the drive time.</td></tr>
+      </tbody>
+    </table>
+    <p>Event titles, notes, attendees, and everything else stay on your Mac. Turn off Location for ForeCal and nothing leaves at all.</p>
+    <p>To change permissions later, open <strong>System Settings › Privacy &amp; Security</strong> and choose <strong>Calendars</strong> or <strong>Location Services</strong>.</p>
+
+    <h2 id="troubleshooting">Troubleshooting</h2>
+    <dl>
+      <dt>The panel says "ForeCal needs calendar access."</dt>
+      <dd>Click <strong>Open Privacy Settings</strong> in the panel, or go to System Settings › Privacy &amp; Security › Calendars, and set ForeCal to <strong>Full Access</strong>. "Add Events Only" isn't enough: it doesn't let apps read events.</dd>
+      <dt>A calendar or event is missing.</dt>
+      <dd>Check gear › Choose Calendars to see whether it's hidden. Then check the built-in Calendar app: if it's not there either, the account isn't set up or hasn't synced yet. See <a href="#calendars">How it connects to your calendars</a>.</dd>
+      <dt>There's no weather.</dt>
+      <dd>ForeCal needs your location. Check System Settings › Privacy &amp; Security › Location Services: Location Services must be on, and ForeCal allowed. Your Mac also needs to be online.</dd>
+      <dt>An event has no leave-by time.</dt>
+      <dd>Check that location access is on, the event is timed rather than all-day, starts in the next 48 hours, has a place rather than a call as its location, and is between 5 minutes and 4 hours away by car. If Apple Maps can't find the place, edit the event to use a full street address.</dd>
+      <dt>A drive time looks wrong.</dt>
+      <dd>Apple Maps may have matched a different place with the same name. Use a full street address in the event, or click Directions to see which place it found.</dd>
+      <dt>I can't find ForeCal in the menu bar.</dt>
+      <dd>See the note under <a href="#first-launch">First launch</a>. If it's not running, open it from your Applications folder.</dd>
+      <dt>macOS asks for permission after every update.</dt>
+      <dd>That happens with builds from source, which are signed ad hoc. Releases are signed with a stable identity and keep your permissions.</dd>
+    </dl>
+
+    <h2 id="uninstall">Uninstall</h2>
+    <ol>
+      <li>If you turned on Launch at Login, turn it off first: gear › Launch at Login.</li>
+      <li>Quit ForeCal: gear › Quit ForeCal.</li>
+      <li>Drag ForeCal from your Applications folder to the Trash.</li>
+    </ol>
+    <p>To also remove its settings and permissions, run these in Terminal:</p>
+<pre><code>defaults delete com.cconway.ForeCal
+tccutil reset All com.cconway.ForeCal</code></pre>
+
+    <h2 id="faq">FAQ</h2>
+    <dl>
+      <dt>Is it really free?</dt>
+      <dd>Yes. ForeCal is free and open source under the MIT License, with no ads, subscriptions, or tracking.</dd>
+      <dt>Does it work with Google Calendar, Outlook, or Exchange?</dt>
+      <dd>Yes, through macOS. Add the account in System Settings › Internet Accounts and its calendars appear in ForeCal.</dd>
+      <dt>Can I create or edit events?</dt>
+      <dd>No. ForeCal is read-only by design. Click Open Calendar to make changes in the Calendar app.</dd>
+      <dt>Does it show reminders?</dt>
+      <dd>No, only calendar events.</dd>
+      <dt>Does it work offline?</dt>
+      <dd>Your calendar does. Weather and drive times need a connection and fill in when you're back online.</dd>
+      <dt>Will it notify me?</dt>
+      <dd>No. ForeCal never sends notifications; the menu bar status is the heads-up. For alerts, set them on the event in the Calendar app.</dd>
+      <dt>Does it use much battery?</dt>
+      <dd>No. It wakes once a minute to update the status, asks for your location at most every 15 minutes, and fetches weather hourly.</dd>
+      <dt>How do I report a bug or ask for a feature?</dt>
+      <dd>Open an issue on <a href="https://github.com/chuckconway/forecal/issues">GitHub</a>. Ideas under consideration are in the <a href="https://github.com/chuckconway/forecal/blob/main/ROADMAP.md">roadmap</a>.</dd>
+    </dl>
+
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>ForeCal is free and open source under the MIT License.</span>
+    <span><a href="index.html">Home</a> · <a href="https://github.com/chuckconway/forecal">GitHub</a> · <a href="https://github.com/chuckconway/forecal/issues">Report an issue</a> · Weather by <a href="https://open-meteo.com">Open-Meteo</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

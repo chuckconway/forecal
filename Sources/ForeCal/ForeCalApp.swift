@@ -9,8 +9,9 @@ struct ForeCalApp: App {
     @StateObject private var hover = HoverState()
 
     init() {
-        let calendar = CalendarStore(requestsAccess: Snapshot.outputDirectory == nil && Snapshot.hoverTestOutput == nil)
-        let location = LocationStore()
+        let live = Snapshot.outputDirectory == nil && Snapshot.hoverTestOutput == nil
+        let calendar = CalendarStore(requestsAccess: live)
+        let location = LocationStore(live: live)
         _store = StateObject(wrappedValue: calendar)
         _location = StateObject(wrappedValue: location)
         let weather = WeatherStore(location: location)

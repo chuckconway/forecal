@@ -9,11 +9,22 @@ cd "$(dirname "$0")"
 LOCAL_IDENTITY=$(cat .signing-identity 2>/dev/null || true)
 NOTARY_PROFILE="ForeCal"  # created once with `xcrun notarytool store-credentials`
 
-swift build -c release
+if [[ "${1:-}" == "--release" ]]; then
+    # Universal, for Apple silicon and Intel. `swift build --arch` would do this
+    # in one step but needs full Xcode, so build each and join them with lipo.
+    swift build -c release --triple arm64-apple-macosx14.0
+    swift build -c release --triple x86_64-apple-macosx14.0
+    BINARY=.build/ForeCal-universal
+    lipo -create -output "$BINARY" \
+        .build/arm64-apple-macosx/release/ForeCal .build/x86_64-apple-macosx/release/ForeCal
+else
+    swift build -c release
+    BINARY=.build/release/ForeCal
+fi
 APP=build/ForeCal.app
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS"
-cp .build/release/ForeCal "$APP/Contents/MacOS/"
+cp "$BINARY" "$APP/Contents/MacOS/ForeCal"
 cp Resources/Info.plist "$APP/Contents/"
 mkdir -p "$APP/Contents/Resources"
 cp Resources/AppIcon.icns Resources/AboutIcon-*.png "$APP/Contents/Resources/"

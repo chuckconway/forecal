@@ -10,8 +10,11 @@ final class LocationStore: NSObject, ObservableObject {
     private let manager = CLLocationManager()
     private var timer: Timer?
 
-    override init() {
+    /// `live: false` never touches CoreLocation or the saved location, for
+    /// snapshots that must look the same on every Mac and reveal nothing about this one.
+    init(live: Bool = true) {
         super.init()
+        guard live else { return }
         // Start from the last known location so weather and drive times show immediately.
         if let saved = UserDefaults.standard.array(forKey: Self.savedKey) as? [Double], saved.count == 2 {
             location = CLLocation(latitude: saved[0], longitude: saved[1])

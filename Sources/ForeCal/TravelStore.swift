@@ -65,6 +65,14 @@ final class TravelStore: ObservableObject {
         trips[event.occurrenceKey]
     }
 
+    /// Stand-in drive times for snapshots. With no location, live lookups never run.
+    func showSample(_ trips: [EKEvent: TimeInterval]) {
+        self.trips = Dictionary(uniqueKeysWithValues: trips.map { event, travelTime in
+            let placeholder = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 0)))
+            return (event.occurrenceKey, Trip(destination: placeholder, travelTime: travelTime, eventStart: event.startDate))
+        })
+    }
+
     private func update() async {
         guard !updating, let origin = location.location else { return }
         updating = true

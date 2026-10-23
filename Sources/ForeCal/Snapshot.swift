@@ -25,7 +25,7 @@ enum Snapshot {
     }
 
     static func runHoverTest(to file: String, store: CalendarStore, weather: WeatherStore, travel: TravelStore) {
-        store.showSample(sampleEvents(in: store.eventStore, now: store.now))
+        showSample(store: store, weather: weather, travel: travel)
         Task {
             let screen = NSScreen.main!.frame
             let saved = CGEvent(source: nil)?.location ?? .zero
@@ -73,7 +73,7 @@ enum Snapshot {
 
     static func capture(to directory: String, store: CalendarStore, weather: WeatherStore, travel: TravelStore) {
         let hover = HoverState()
-        store.showSample(sampleEvents(in: store.eventStore, now: store.now))
+        showSample(store: store, weather: weather, travel: travel)
         Task {
             // Give the forecast and drive times a moment to load.
             try? await Task.sleep(for: .seconds(5))
@@ -227,6 +227,32 @@ enum Snapshot {
             try? await Task.sleep(for: .milliseconds(300))
         }
         try? report.write(toFile: directory + "/scroll.txt", atomically: true, encoding: .utf8)
+    }
+
+    /// Sample events, forecasts, and drive times: the same on every Mac, and
+    /// nothing from this one.
+    private static func showSample(store: CalendarStore, weather: WeatherStore, travel: TravelStore) {
+        let events = sampleEvents(in: store.eventStore, now: store.now)
+        store.showSample(events)
+
+        let minutes: [String: Double] = ["Pick up Grandma": 35, "Soccer practice": 18, "Gymnastics": 12]
+        travel.showSample(Dictionary(uniqueKeysWithValues: events.compactMap { event in
+            minutes[event.title ?? ""].map { (event, $0 * 60) }
+        }))
+
+        // A plausible fortnight: a few clear days, some cloud, one rainy spell.
+        let pattern: [(code: Int, high: Double, low: Double, rain: Int?)] = [
+            (2, 71, 56, nil), (0, 73, 55, nil), (3, 68, 54, 10), (61, 62, 51, 80),
+            (80, 60, 50, 60), (2, 66, 52, 20), (0, 70, 53, nil),
+        ]
+        let today = Calendar.current.startOfDay(for: store.now)
+        weather.showSample(Dictionary(uniqueKeysWithValues: (0..<16).map { offset in
+            let day = pattern[offset % pattern.count]
+            return (
+                Calendar.current.date(byAdding: .day, value: offset, to: today)!,
+                DailyForecast(code: day.code, high: day.high, low: day.low, precipitationChance: day.rain)
+            )
+        }))
     }
 
     /// A day that exercises every row style: past, all-day, a call, a drive, tomorrow.
