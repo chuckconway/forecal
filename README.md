@@ -101,9 +101,10 @@ your system.
 
 **Requires macOS 14 Sonoma or later.**
 
-Signed, notarized downloads are coming soon on the
-[releases page](https://github.com/chuckconway/forecal/releases). Until then,
-[build from source](#build-from-source); it takes about a minute.
+**[Download ForeCal](https://github.com/chuckconway/forecal/releases/latest/download/ForeCal.zip)** (signed and notarized by Apple, for Apple
+silicon and Intel), open the zip, and drag ForeCal into Applications. Older
+versions are on the [releases page](https://github.com/chuckconway/forecal/releases).
+You can also [build from source](#build-from-source).
 
 The first time ForeCal runs, it asks for two permissions:
 
