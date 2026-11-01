@@ -43,8 +43,51 @@ struct PanelView: View {
         }
         .id(todayColor)
         .frame(width: 340)
+        // The panel's views live on between opens, so put it back on today each
+        // time. Doing it on close too keeps the jump out of sight.
+        .background(PanelWindowObserver { resetToToday() })
         // Opaque, so light mode doesn't pick up grey from the translucent menu bar window.
         .background(Theme.background)
+    }
+}
+
+extension PanelView {
+    private func resetToToday() {
+        screen = .calendar
+        store.goToToday()
+    }
+}
+
+/// Calls `onOpenOrClose` when the window hosting this view becomes or stops
+/// being key, which for a menu bar panel means it opened or closed.
+private struct PanelWindowObserver: NSViewRepresentable {
+    let onOpenOrClose: () -> Void
+
+    func makeNSView(context: Context) -> NSView { WindowView(onOpenOrClose: onOpenOrClose) }
+    func updateNSView(_ view: NSView, context: Context) {
+        (view as? WindowView)?.onOpenOrClose = onOpenOrClose
+    }
+
+    private final class WindowView: NSView {
+        var onOpenOrClose: () -> Void
+        private var observers: [NSObjectProtocol] = []
+
+        init(onOpenOrClose: @escaping () -> Void) {
+            self.onOpenOrClose = onOpenOrClose
+            super.init(frame: .zero)
+        }
+        required init?(coder: NSCoder) { fatalError() }
+
+        override func viewDidMoveToWindow() {
+            observers.forEach(NotificationCenter.default.removeObserver)
+            observers = []
+            guard let window else { return }
+            observers = [NSWindow.didBecomeKeyNotification, NSWindow.didResignKeyNotification].map {
+                NotificationCenter.default.addObserver(forName: $0, object: window, queue: .main) { [weak self] _ in
+                    self?.onOpenOrClose()
+                }
+            }
+        }
     }
 }
 
