@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ForeCal Privacy Policy</title>
+<meta name="description" content="What ForeCal reads, what leaves your Mac, and who receives it.">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="guide-hero">
+  <nav class="nav"><div class="wrap"><a href="index.html">Home</a><a href="guide.html">User Guide</a><a href="https://github.com/chuckconway/forecal">GitHub</a></div></nav>
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="icon.png" alt="">ForeCal</a>
+    <h1>Privacy Policy</h1>
+    <p>Effective November 1, 2026</p>
+  </div>
+</header>
+
+<div class="wrap policy">
+  <main class="doc">
+
+    <h2>The short version</h2>
+    <p>ForeCal has no server, no account, no analytics, and no tracking. The developer never receives any of your data. Your calendars stay on your Mac. Two features send your location to a third party so they can work, and you can turn both off by not granting location access.</p>
+
+    <h2>What ForeCal reads on your Mac</h2>
+    <ul>
+      <li><strong>Your calendars,</strong> through macOS, with your permission. ForeCal only reads them; it never creates, changes, or deletes events.</li>
+      <li><strong>Your location,</strong> with your permission, for the weather forecast and drive times. Location is optional; everything else works without it.</li>
+    </ul>
+    <p>ForeCal runs in Apple's App Sandbox, so macOS limits it to your calendars, your location, and the network. It can't read your files or other apps' data.</p>
+
+    <h2>What leaves your Mac</h2>
+    <table>
+      <thead><tr><th>Sent</th><th>To</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Your location, rounded to about 1 km</td><td><a href="https://open-meteo.com">Open-Meteo</a></td><td>The weather forecast, about once an hour.</td></tr>
+        <tr><td>Your location, and the location text of in-person events in the next 48 hours</td><td>Apple Maps</td><td>Finding the place and the drive time.</td></tr>
+      </tbody>
+    </table>
+    <p>Nothing else leaves your Mac: not event titles, notes, attendees, or which calendars you have. These requests go straight from your Mac to Open-Meteo and Apple; they never pass through a server run by the developer. Open-Meteo's handling is described in its <a href="https://open-meteo.com/en/terms">terms</a>, and Apple's in the <a href="https://www.apple.com/legal/privacy/">Apple Privacy Policy</a>.</p>
+
+    <h2>What ForeCal stores</h2>
+    <p>Your settings (which calendars to hide, the color for today, whether to launch at login) and your last known location, so the weather shows right away at launch. They're stored only on your Mac, inside ForeCal's sandbox, and are removed when you delete ForeCal's data (see <a href="guide.html#uninstall">Uninstall</a>).</p>
+
+    <h2>Children</h2>
+    <p>ForeCal collects no data from anyone, including children.</p>
+
+    <h2>Changes</h2>
+    <p>If this policy changes, the new version will be posted here with a new effective date. ForeCal is open source, so you can also see exactly what it does in <a href="https://github.com/chuckconway/forecal">its source code</a>.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about privacy: <a href="https://github.com/chuckconway/forecal/issues">open an issue on GitHub</a>.</p>
+
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>ForeCal is free and open source under the MIT License.</span>
+    <span><a href="index.html">Home</a> · <a href="guide.html">User Guide</a> · <a href="privacy.html">Privacy</a> · <a href="https://github.com/chuckconway/forecal">GitHub</a> · Weather by <a href="https://open-meteo.com">Open-Meteo</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

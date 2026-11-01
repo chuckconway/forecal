@@ -7,7 +7,7 @@ import Testing
 struct CalendarStoreTests {
     private func store(with events: [EKEvent]) -> CalendarStore {
         let store = CalendarStore(requestsAccess: false)
-        store.showSample(events)
+        store.showSample(events, now: Fixtures.now)
         return store
     }
 

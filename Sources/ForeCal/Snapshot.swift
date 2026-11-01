@@ -232,8 +232,10 @@ enum Snapshot {
     /// Sample events, forecasts, and drive times: the same on every Mac, and
     /// nothing from this one.
     private static func showSample(store: CalendarStore, weather: WeatherStore, travel: TravelStore) {
-        let events = sampleEvents(in: store.eventStore, now: store.now)
-        store.showSample(events)
+        // Mid-morning, so the day has a past event, a now line, and plenty ahead.
+        let now = Calendar.current.date(bySettingHour: 10, minute: 5, second: 0, of: Date())!
+        let events = sampleEvents(in: store.eventStore, now: now)
+        store.showSample(events, now: now)
 
         let minutes: [String: Double] = ["Pick up Grandma": 35, "Soccer practice": 18, "Gymnastics": 12]
         travel.showSample(Dictionary(uniqueKeysWithValues: events.compactMap { event in
@@ -296,7 +298,7 @@ enum Snapshot {
             event("Pick up Grandma", family, minutesFromNow: 100, length: 60, location: "San Francisco International Airport"),
             event("Soccer practice", kids, minutesFromNow: 360, length: 90, location: "Golden Gate Park"),
             event("1:1 with Dana", work, minutesFromNow: 24 * 60 + 60, length: 30, url: "https://meet.google.com/abc-defg-hij"),
-            event("Gymnastics", kids, minutesFromNow: 24 * 60 + 600, length: 60, location: "City Gym, 100 Main St"),
+            event("Gymnastics", kids, minutesFromNow: 24 * 60 + 420, length: 60, location: "City Gym, 100 Main St"),
         ]
     }
 }
