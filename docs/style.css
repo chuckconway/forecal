@@ -117,6 +117,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
 .guide-hero .brand { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-weight: 700; margin-bottom: 18px; }
 .guide-hero .brand img { width: 36px; height: 36px; }
 .guide { display: grid; grid-template-columns: 220px 1fr; gap: 48px; padding-top: 40px; padding-bottom: 72px; }
+.policy { max-width: 760px; padding-top: 40px; padding-bottom: 72px; }
 .toc { position: sticky; top: 20px; align-self: start; font-size: 15px; }
 .toc ol { list-style: none; margin: 0; padding: 0; }
 .toc li { margin: 0 0 8px; }

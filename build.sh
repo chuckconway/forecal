@@ -2,6 +2,7 @@
 # Builds ForeCal.app into ./build.
 #   --install   copy it to ~/Applications and launch it
 #   --release   sign with Developer ID, notarize, and write build/ForeCal.zip
+#   --appstore  sign for the Mac App Store and write build/ForeCal.pkg
 #   --snapshot <dir>, --hover-test <file>   run the snapshot tools (see Snapshot.swift)
 set -euo pipefail
 cd "$(dirname "$0")"
@@ -9,8 +10,11 @@ cd "$(dirname "$0")"
 # Optional: the name of a self-signed code-signing identity, in an untracked file.
 LOCAL_IDENTITY=$(cat .signing-identity 2>/dev/null || true)
 NOTARY_PROFILE="ForeCal"  # created once with `xcrun notarytool store-credentials`
+# The Mac App Store provisioning profile, downloaded from the developer site (untracked).
+APPSTORE_PROFILE="AppStore.provisionprofile"
 
-if [[ "${1:-}" == "--release" ]]; then
+if [[ "${1:-}" == "--release" || "${1:-}" == "--appstore" ]]; then
+    ./test.sh
     # Universal, for Apple silicon and Intel. `swift build --arch` would do this
     # in one step but needs full Xcode, so build each and join them with lipo.
     swift build -c release --triple arm64-apple-macosx14.0
@@ -27,8 +31,16 @@ rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS"
 cp "$BINARY" "$APP/Contents/MacOS/ForeCal"
 cp Resources/Info.plist "$APP/Contents/"
+# Every upload to the App Store needs a higher build number; the commit count
+# on main only goes up.
+/usr/libexec/PlistBuddy -c "Set :CFBundleVersion $(git rev-list --count HEAD 2>/dev/null || echo 1)" "$APP/Contents/Info.plist"
 mkdir -p "$APP/Contents/Resources"
 cp Resources/AppIcon.icns Resources/AboutIcon-*.png Resources/container-migration.plist "$APP/Contents/Resources/"
+
+# The first identity in the keychain whose name starts with $1, or nothing.
+identity() {
+    security find-identity -v | { grep -o "\"$1[^\"]*\"" || true; } | head -1 | tr -d '"'
+}
 
 # Hardened runtime everywhere, so local builds run under the same rules as
 # releases, sandbox included; the entitlements let it through to calendars,
@@ -39,8 +51,7 @@ sign() {
 }
 
 if [[ "${1:-}" == "--release" ]]; then
-    ./test.sh
-    IDENTITY=$(security find-identity -v -p codesigning | grep -o '"Developer ID Application: [^"]*"' | head -1 | tr -d '"')
+    IDENTITY=$(identity "Developer ID Application: ")
     if [[ -z "$IDENTITY" ]]; then
         echo "No Developer ID Application certificate in the keychain." >&2
         exit 1
@@ -56,6 +67,44 @@ if [[ "${1:-}" == "--release" ]]; then
     ditto -c -k --keepParent "$APP" build/ForeCal.zip
     spctl --assess --type execute --verbose "$APP"
     echo "Release ready: build/ForeCal.zip"
+    exit 0
+fi
+
+if [[ "${1:-}" == "--appstore" ]]; then
+    APP_IDENTITY=$(identity "Apple Distribution: ")
+    # The Mac Installer Distribution certificate's name in the keychain.
+    PKG_IDENTITY=$(identity "3rd Party Mac Developer Installer: ")
+    if [[ -z "$APP_IDENTITY" || -z "$PKG_IDENTITY" ]]; then
+        echo "Needs Apple Distribution and Mac Installer Distribution certificates in the keychain." >&2
+        exit 1
+    fi
+    if [[ ! -f "$APPSTORE_PROFILE" ]]; then
+        echo "Needs the Mac App Store provisioning profile at $APPSTORE_PROFILE." >&2
+        exit 1
+    fi
+    TEAM=$(sed -E 's/.*\(([A-Z0-9]+)\)$/\1/' <<<"$APP_IDENTITY")
+    BUNDLE_ID=$(/usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" Resources/Info.plist)
+    PROFILE_PLIST=build/profile.plist
+    security cms -D -i "$APPSTORE_PROFILE" > "$PROFILE_PLIST"
+    PROFILE_APP_ID=$(/usr/libexec/PlistBuddy -c "Print :Entitlements:com.apple.application-identifier" "$PROFILE_PLIST")
+    if [[ "$PROFILE_APP_ID" != "$TEAM.$BUNDLE_ID" ]]; then
+        echo "The provisioning profile is for $PROFILE_APP_ID, not $TEAM.$BUNDLE_ID." >&2
+        exit 1
+    fi
+    cp "$APPSTORE_PROFILE" "$APP/Contents/embedded.provisionprofile"
+    # The App Store also wants the app and team identifiers that Xcode would add.
+    ENTITLEMENTS=build/appstore.entitlements
+    cp Resources/ForeCal.entitlements "$ENTITLEMENTS"
+    /usr/libexec/PlistBuddy \
+        -c "Add :com.apple.application-identifier string $TEAM.$BUNDLE_ID" \
+        -c "Add :com.apple.developer.team-identifier string $TEAM" \
+        "$ENTITLEMENTS"
+    codesign --force --options runtime --timestamp \
+        --entitlements "$ENTITLEMENTS" --sign "$APP_IDENTITY" "$APP"
+    codesign --verify --strict --verbose=2 "$APP"
+    productbuild --component "$APP" /Applications --sign "$PKG_IDENTITY" build/ForeCal.pkg
+    pkgutil --check-signature build/ForeCal.pkg
+    echo "App Store build ready: build/ForeCal.pkg (upload it with Transporter)"
     exit 0
 fi
 

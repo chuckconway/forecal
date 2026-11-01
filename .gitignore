@@ -2,3 +2,4 @@
 build/
 .signing-identity
 .DS_Store
+AppStore.provisionprofile

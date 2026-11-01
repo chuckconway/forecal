@@ -211,6 +211,16 @@ screenshots here come from it.
 and the hardened runtime, notarizes with Apple, staples the ticket, and writes
 `build/ForeCal.zip`. It expects a `notarytool` keychain profile named `ForeCal`.
 
+`./build.sh --appstore` runs the tests, signs for the Mac App Store, and writes
+`build/ForeCal.pkg` to upload with Transporter. It needs Apple Distribution and
+Mac Installer Distribution certificates in the keychain, and the Mac App Store
+provisioning profile at `AppStore.provisionprofile` (gitignored). Both builds
+set the build number to the commit count, so each upload is higher than the
+last.
+
+`Resources/appstore/make-screenshots.sh` renders the App Store screenshots
+(2880 × 1800) into `build/appstore-screenshots`, from snapshot mode.
+
 ### Icon
 
 The icon is drawn in `Resources/icon/AppIcon.svg` (and `AppIcon-Dark.svg`, shown

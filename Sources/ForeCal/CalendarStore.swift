@@ -136,6 +136,7 @@ final class CalendarStore: ObservableObject {
     }
 
     private func tick() {
+        guard sampleEvents == nil else { return }
         let previousToday = today
         now = Date()
         guard today != previousToday else { return }
@@ -201,8 +202,10 @@ final class CalendarStore: ObservableObject {
 
     // MARK: - Loading
 
-    func showSample(_ events: [EKEvent]) {
+    /// `now` stays put for samples, so snapshots look the same whenever they're taken.
+    func showSample(_ events: [EKEvent], now: Date) {
         sampleEvents = events
+        self.now = now
         access = .granted
         reload()
     }
