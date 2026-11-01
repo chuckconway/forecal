@@ -145,6 +145,9 @@ Mac:
 Event titles, notes, attendees, and everything else stay on your Mac. ForeCal
 only reads your calendars; it never creates, changes, or deletes events.
 
+ForeCal runs in Apple's App Sandbox, so macOS itself limits it to your
+calendars, your location, and the network.
+
 ## Troubleshooting
 
 **"ForeCal needs calendar access."** Open System Settings › Privacy & Security
@@ -194,11 +197,12 @@ runs it on every push and pull request.
 ### Screenshots without your own data
 
 ```sh
-build/ForeCal.app/Contents/MacOS/ForeCal --snapshot <dir>
+./build.sh --snapshot <dir>
 ```
 
 Renders the panel offscreen with sample events, in light and dark, and writes
-PNGs to `<dir>`. It never touches your calendars or asks for permissions. The
+PNGs to `<dir>`. It never touches your calendars or asks for permissions, so
+it runs from an unsandboxed copy of the app that can write anywhere. The
 screenshots here come from it.
 
 ### Releases

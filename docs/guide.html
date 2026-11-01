@@ -189,6 +189,7 @@ cd forecal
       </tbody>
     </table>
     <p>Event titles, notes, attendees, and everything else stay on your Mac. Turn off Location for ForeCal and nothing leaves at all.</p>
+    <p>ForeCal runs in Apple's App Sandbox, so macOS itself limits it to your calendars, your location, and the network. It can't read your files or other apps' data.</p>
     <p>To change permissions later, open <strong>System Settings › Privacy &amp; Security</strong> and choose <strong>Calendars</strong> or <strong>Location Services</strong>.</p>
 
     <h2 id="troubleshooting">Troubleshooting</h2>
@@ -215,8 +216,8 @@ cd forecal
       <li>Quit ForeCal: gear › Quit ForeCal.</li>
       <li>Drag ForeCal from your Applications folder to the Trash.</li>
     </ol>
-    <p>To also remove its settings and permissions, run these in Terminal:</p>
-<pre><code>defaults delete com.cconway.ForeCal
+    <p>To also remove its settings and permissions, run these in Terminal. macOS may ask you to let Terminal access data from other apps.</p>
+<pre><code>rm -rf ~/Library/Containers/com.cconway.ForeCal
 tccutil reset All com.cconway.ForeCal</code></pre>
 
     <h2 id="faq">FAQ</h2>

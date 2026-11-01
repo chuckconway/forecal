@@ -2,6 +2,7 @@
 # Builds ForeCal.app into ./build.
 #   --install   copy it to ~/Applications and launch it
 #   --release   sign with Developer ID, notarize, and write build/ForeCal.zip
+#   --snapshot <dir>, --hover-test <file>   run the snapshot tools (see Snapshot.swift)
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -27,10 +28,11 @@ mkdir -p "$APP/Contents/MacOS"
 cp "$BINARY" "$APP/Contents/MacOS/ForeCal"
 cp Resources/Info.plist "$APP/Contents/"
 mkdir -p "$APP/Contents/Resources"
-cp Resources/AppIcon.icns Resources/AboutIcon-*.png "$APP/Contents/Resources/"
+cp Resources/AppIcon.icns Resources/AboutIcon-*.png Resources/container-migration.plist "$APP/Contents/Resources/"
 
 # Hardened runtime everywhere, so local builds run under the same rules as
-# releases; the entitlements let it through to calendars and location.
+# releases, sandbox included; the entitlements let it through to calendars,
+# location, and the network.
 sign() {
     codesign --force --options runtime --timestamp=none \
         --entitlements Resources/ForeCal.entitlements --sign "$1" "$APP"
@@ -63,6 +65,20 @@ if [[ -n "$LOCAL_IDENTITY" ]] && security find-identity -p codesigning | grep -q
     sign "$LOCAL_IDENTITY"
 else
     sign -
+fi
+
+# Snapshot tools write wherever they're told, which the sandbox blocks. They
+# use sample data and never touch calendars or location, so run them from an
+# unsandboxed copy made only for this.
+if [[ "${1:-}" == "--snapshot" || "${1:-}" == "--hover-test" ]]; then
+    TOOL=build/ForeCal-snapshot.app
+    rm -rf "$TOOL"
+    cp -R "$APP" "$TOOL"
+    codesign --force --sign - "$TOOL"
+    # --snapshot takes a directory, --hover-test a file.
+    if [[ "$1" == "--snapshot" ]]; then mkdir -p "$2"; else mkdir -p "$(dirname "$2")"; fi
+    "$TOOL/Contents/MacOS/ForeCal" "$1" "$(cd "$(dirname "$2")" && pwd)/$(basename "$2")"
+    exit 0
 fi
 
 if [[ "${1:-}" == "--install" ]]; then
