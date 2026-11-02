@@ -1,5 +1,13 @@
 .build/
 build/
-.signing-identity
 .DS_Store
-AppStore.provisionprofile
+
+# Signing material. Certificates and keys live in the keychain (back them up as
+# a .p12 in a password manager); profiles come from the developer site.
+.signing-identity
+*.provisionprofile
+*.p12
+*.cer
+*.certSigningRequest
+*.pem
+*.key
