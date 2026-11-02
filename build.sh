@@ -99,11 +99,24 @@ if [[ "${1:-}" == "--appstore" ]]; then
         -c "Add :com.apple.application-identifier string $TEAM.$BUNDLE_ID" \
         -c "Add :com.apple.developer.team-identifier string $TEAM" \
         "$ENTITLEMENTS"
+    # A downloaded profile carries the quarantine attribute, which the App Store
+    # rejects anywhere in the app (error 91109). Clear all attributes before signing.
+    xattr -cr "$APP"
     codesign --force --options runtime --timestamp \
         --entitlements "$ENTITLEMENTS" --sign "$APP_IDENTITY" "$APP"
     codesign --verify --strict --verbose=2 "$APP"
     productbuild --component "$APP" /Applications --sign "$PKG_IDENTITY" build/ForeCal.pkg
     pkgutil --check-signature build/ForeCal.pkg
+    # Check what the App Store will see: nothing in the package may be quarantined.
+    EXPANDED=build/pkg-check
+    rm -rf "$EXPANDED"
+    pkgutil --expand-full build/ForeCal.pkg "$EXPANDED"
+    if xattr -r "$EXPANDED" | grep -q com.apple.quarantine; then
+        echo "Quarantined files in the package:" >&2
+        xattr -r "$EXPANDED" | grep com.apple.quarantine >&2
+        exit 1
+    fi
+    rm -rf "$EXPANDED"
     echo "App Store build ready: build/ForeCal.pkg (upload it with Transporter)"
     exit 0
 fi
