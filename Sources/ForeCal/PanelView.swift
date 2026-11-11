@@ -116,6 +116,9 @@ private struct AccessDeniedView: View {
 
 private struct FooterView: View {
     @EnvironmentObject private var store: CalendarStore
+    @EnvironmentObject private var weather: WeatherStore
+    @AppStorage(WeatherSettings.showWeatherKey) private var showWeather = true
+    @AppStorage(WeatherSettings.showSunTimesKey) private var showSunTimes = true
     @AppStorage(Accent.storageKey) private var todayColor = Accent.red.rawValue
     @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
     @Binding var screen: Screen
@@ -140,6 +143,8 @@ private struct FooterView: View {
                         Text(accent.name).tag(accent.rawValue)
                     }
                 }
+                Toggle("Show Weather", isOn: $showWeather)
+                Toggle("Show Sunrise & Sunset", isOn: $showSunTimes)
                 Toggle("Launch at Login", isOn: Binding(
                     get: { launchAtLogin },
                     set: setLaunchAtLogin
@@ -155,6 +160,9 @@ private struct FooterView: View {
             .menuIndicator(.hidden)
             .fixedSize()
         }
+        // Turned back on after being off: the forecast may be stale or missing.
+        .onChange(of: showWeather) { if showWeather { Task { await weather.refresh() } } }
+        .onChange(of: showSunTimes) { if showSunTimes { Task { await weather.refresh() } } }
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
     }

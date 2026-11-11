@@ -157,7 +157,9 @@ cd forecal
     <p>Drive times refresh every 10 minutes for events starting in the next two hours, and every hour otherwise. They also refresh when you've moved more than 1 km. Leave-by times are rounded down to the minute, so they're never late.</p>
 
     <h2 id="weather">Weather</h2>
-    <p>Each day header in the agenda shows that day's forecast for where you are: an icon, the high, the low, and the chance of rain when it's 30% or more. Forecasts reach 16 days ahead and refresh hourly, or when you've moved more than 5 km. Temperatures are in °F or °C, following your Mac's region settings.</p>
+    <p>Each day header in the agenda shows that day's forecast and daylight for where you are. <strong>↑6:43 / ↓4:55 ☀️ 71° 56°</strong> means the sun rises at 6:43 and sets at 4:55, with clear skies, a high of 71°, and a low of 56°. Hover over the sun times to see them with AM and PM. Forecasts reach 16 days ahead and refresh hourly, or when you've moved more than 5 km. Temperatures are in °F or °C, following your Mac's region settings.</p>
+    <p>When a day header is too crowded for one line, the sunrise and sunset times move below the forecast. Near the poles, on days the sun doesn't rise or set, they're left out.</p>
+    <p>Turn either part off from the gear menu with <strong>Show Weather</strong> and <strong>Show Sunrise &amp; Sunset</strong>. With both off, ForeCal doesn't fetch the forecast at all.</p>
     <p>Weather comes from <a href="https://open-meteo.com">Open-Meteo</a>, a free, open forecast service.</p>
 
     <h2 id="join">Join buttons</h2>
@@ -170,6 +172,10 @@ cd forecal
       <dd>Every calendar, grouped by account. Check or uncheck calendars, or use Show All and Hide All for a whole account. Click Done to return.</dd>
       <dt>Today Color</dt>
       <dd>The color that marks today in the grid and agenda: red, blue, or indigo.</dd>
+      <dt>Show Weather</dt>
+      <dd>The forecast icon, high, and low in each day header. On by default.</dd>
+      <dt>Show Sunrise &amp; Sunset</dt>
+      <dd>The sunrise and sunset times in each day header. On by default. With this and Show Weather both off, your location isn't sent to Open-Meteo.</dd>
       <dt>Launch at Login</dt>
       <dd>Start ForeCal automatically when you log in.</dd>
       <dt>About ForeCal</dt>
@@ -184,7 +190,7 @@ cd forecal
     <table>
       <thead><tr><th>Sent</th><th>To</th><th>Why</th></tr></thead>
       <tbody>
-        <tr><td>Your location, rounded to about 1 km</td><td><a href="https://open-meteo.com">Open-Meteo</a></td><td>The weather forecast, about once an hour.</td></tr>
+        <tr><td>Your location, rounded to about 1 km</td><td><a href="https://open-meteo.com">Open-Meteo</a></td><td>The weather forecast and sunrise and sunset times, about once an hour. Not sent when Show Weather and Show Sunrise &amp; Sunset are both off.</td></tr>
         <tr><td>Your location, and the location text of in-person events in the next 48 hours</td><td>Apple Maps</td><td>Finding the place and the drive time.</td></tr>
       </tbody>
     </table>
@@ -199,7 +205,7 @@ cd forecal
       <dt>A calendar or event is missing.</dt>
       <dd>Check gear › Choose Calendars to see whether it's hidden. Then check the built-in Calendar app: if it's not there either, the account isn't set up or hasn't synced yet. See <a href="#calendars">How it connects to your calendars</a>.</dd>
       <dt>There's no weather.</dt>
-      <dd>ForeCal needs your location. Check System Settings › Privacy &amp; Security › Location Services: Location Services must be on, and ForeCal allowed. Your Mac also needs to be online.</dd>
+      <dd>Check that gear › Show Weather is on. ForeCal also needs your location: check System Settings › Privacy &amp; Security › Location Services: Location Services must be on, and ForeCal allowed. Your Mac also needs to be online.</dd>
       <dt>An event has no leave-by time.</dt>
       <dd>Check that location access is on, the event is timed rather than all-day, starts in the next 48 hours, has a place rather than a call as its location, and is between 5 minutes and 4 hours away by car. If Apple Maps can't find the place, edit the event to use a full street address.</dd>
       <dt>A drive time looks wrong.</dt>
