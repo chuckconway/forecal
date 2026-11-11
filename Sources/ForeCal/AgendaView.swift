@@ -87,11 +87,50 @@ private struct DayEvents: View {
 
 private struct DayHeader: View {
     @EnvironmentObject private var weather: WeatherStore
+    @AppStorage(WeatherSettings.showWeatherKey) private var showWeather = true
+    @AppStorage(WeatherSettings.showSunTimesKey) private var showSunTimes = true
     let day: AgendaDay
 
     private var isToday: Bool { Calendar.current.isDateInToday(day.day) }
 
     var body: some View {
+        let forecast = weather.forecast(for: day.day)
+        let shownForecast = showWeather ? forecast : nil
+        let sunTimes = showSunTimes ? forecast?.sunTimes : nil
+        // One line when it fits. A long day name with a rain chance and
+        // triple-digit temperatures doesn't, so the sun times drop below.
+        ViewThatFits(in: .horizontal) {
+            HStack(alignment: .firstTextBaseline, spacing: 6) {
+                title
+                Spacer(minLength: 8)
+                if let sunTimes {
+                    SunTimesLabel(sunrise: sunTimes.sunrise, sunset: sunTimes.sunset)
+                }
+                if let shownForecast {
+                    ForecastLabel(forecast: shownForecast).padding(.leading, sunTimes == nil ? 0 : 2)
+                }
+            }
+            HStack(alignment: .firstTextBaseline, spacing: 6) {
+                title
+                Spacer(minLength: 8)
+                VStack(alignment: .trailing, spacing: 2) {
+                    if let shownForecast {
+                        ForecastLabel(forecast: shownForecast)
+                    }
+                    if let sunTimes {
+                        SunTimesLabel(sunrise: sunTimes.sunrise, sunset: sunTimes.sunset)
+                    }
+                }
+            }
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 7)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        // Opaque, so rows scrolling under the pinned header don't show through.
+        .background(isToday ? Theme.todayBand : Theme.band)
+    }
+
+    private var title: some View {
         HStack(alignment: .firstTextBaseline, spacing: 6) {
             Text(name)
                 .font(.system(size: 12, weight: .heavy))
@@ -100,16 +139,9 @@ private struct DayHeader: View {
             Text(dateText)
                 .font(.system(size: 12))
                 .foregroundStyle(Theme.textSecondary)
-            Spacer(minLength: 0)
-            if let forecast = weather.forecast(for: day.day) {
-                ForecastLabel(forecast: forecast)
-            }
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 7)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        // Opaque, so rows scrolling under the pinned header don't show through.
-        .background(isToday ? Theme.todayBand : Theme.band)
+        .lineLimit(1)
+        .fixedSize()
     }
 
     private var name: String {
@@ -160,10 +192,6 @@ private struct ForecastLabel: View {
             Image(systemName: forecast.symbolName)
                 .symbolRenderingMode(.palette)
                 .foregroundStyle(forecast.colors.base, forecast.colors.accent)
-            if let chance = forecast.precipitationChance, chance >= 30 {
-                Text("\(chance)%")
-                    .foregroundStyle(Theme.rain)
-            }
             Text("\(Int(forecast.high.rounded()))°")
             Text("\(Int(forecast.low.rounded()))°")
                 .foregroundStyle(Theme.textSecondary)
@@ -171,6 +199,35 @@ private struct ForecastLabel: View {
         .font(.system(size: 12))
         .foregroundStyle(Theme.text)
         .monospacedDigit()
+        .lineLimit(1)
+        .fixedSize()
+    }
+}
+
+/// "↑6:43 / ↓4:55": sunrise and sunset, without AM/PM to fit the header.
+private struct SunTimesLabel: View {
+    let sunrise: Date
+    let sunset: Date
+
+    private static let style = Date.FormatStyle().hour(.defaultDigits(amPM: .omitted)).minute()
+
+    var body: some View {
+        HStack(spacing: 1) {
+            Image(systemName: "arrow.up")
+                .font(.system(size: 8, weight: .semibold))
+            Text(sunrise.formatted(Self.style))
+            Text("/")
+                .padding(.horizontal, 3)
+            Image(systemName: "arrow.down")
+                .font(.system(size: 8, weight: .semibold))
+            Text(sunset.formatted(Self.style))
+        }
+        .font(.system(size: 10))
+        .foregroundStyle(Theme.textSecondary)
+        .monospacedDigit()
+        .lineLimit(1)
+        .fixedSize()
+        .help("Sunrise \(sunrise.formatted(date: .omitted, time: .shortened)), sunset \(sunset.formatted(date: .omitted, time: .shortened))")
     }
 }
 

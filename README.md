@@ -62,9 +62,14 @@ Apple Maps with current traffic. The event shows a badge such as
 
 ### Weather
 
-Each day in the agenda shows its forecast: an icon, the high and low, and the
-chance of rain when it's 30% or more. Forecasts reach 16 days out, in °F or °C
-to match your region.
+Each day in the agenda shows its forecast and its daylight:
+**↑6:43 / ↓4:55 ☀️ 71° 56°** is sunrise, sunset, an icon for the conditions, and
+the high and low. Forecasts reach 16 days out, in °F or °C to match your region.
+Hover over the sun times to see them with AM and PM.
+
+Turn either part off from the gear menu: **Show Weather** and
+**Show Sunrise & Sunset**. With both off, ForeCal doesn't fetch the forecast at
+all.
 
 ### Join buttons
 
@@ -88,7 +93,8 @@ Chime, and GoToMeeting.
 ### Your choices
 
 From the gear menu: which calendars to show, the color for today (red, blue, or
-indigo), and whether ForeCal starts when you log in. Light and dark mode follow
+indigo), whether to show the weather and the sunrise and sunset times, and
+whether ForeCal starts when you log in. Light and dark mode follow
 your system.
 
 <p align="center">
@@ -129,6 +135,8 @@ choose **Quit ForeCal** from the gear menu.
 | Open macOS Calendar | Click **Open Calendar** at the bottom. |
 | Hide or show calendars | Gear menu › **Choose Calendars…** |
 | Change today's color | Gear menu › **Today Color** |
+| Hide or show the weather | Gear menu › **Show Weather** |
+| Hide or show sunrise and sunset | Gear menu › **Show Sunrise & Sunset** |
 | Start at login | Gear menu › **Launch at Login** |
 | See the version and credits | Gear menu › **About ForeCal** |
 
@@ -137,8 +145,9 @@ choose **Quit ForeCal** from the gear menu.
 ForeCal has no server, account, analytics, or tracking. Two things leave your
 Mac:
 
-- **Weather:** your location, rounded to about 1 km, goes to
-  [Open-Meteo](https://open-meteo.com) about once an hour.
+- **Weather, sunrise, and sunset:** your location, rounded to about 1 km, goes
+  to [Open-Meteo](https://open-meteo.com) about once an hour. Turn off both
+  **Show Weather** and **Show Sunrise & Sunset** and it isn't sent.
 - **Drive times:** your location and the addresses of in-person events in the
   next 48 hours go to Apple Maps.
 
@@ -154,8 +163,9 @@ calendars, your location, and the network.
 › Calendars and turn on **Full Access** for ForeCal. The panel has a button that
 takes you there.
 
-**No weather.** ForeCal needs your location. Check System Settings › Privacy &
-Security › Location Services, and that your Mac is online.
+**No weather.** Check that **Show Weather** is on in the gear menu. ForeCal
+also needs your location: check System Settings › Privacy & Security › Location
+Services, and that your Mac is online.
 
 **No leave-by time on an event.** It needs location access, and the event has
 to be timed (not all-day), within the next 48 hours, at a place rather than a
@@ -190,7 +200,7 @@ root (it's gitignored).
 
 The tests use Swift Testing and cover the logic with rules behind it: the menu
 bar status and its priorities, which events count as in person, meeting links,
-weather decoding and location rounding, and how multi-day events land on days.
+weather, sunrise, and sunset decoding, when the forecast is fetched, location rounding, and how multi-day events land on days.
 `test.sh` works with full Xcode or just the Command Line Tools. GitHub Actions
 runs it on every push and pull request.
 
