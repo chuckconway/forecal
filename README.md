@@ -183,7 +183,7 @@ You need Xcode or the Command Line Tools (`xcode-select --install`).
 ```sh
 git clone https://github.com/chuckconway/forecal.git
 cd forecal
-./build.sh --install   # builds build/ForeCal.app, copies it to ~/Applications, and opens it
+./build.sh --install   # builds build/ForeCal.app, installs it to /Applications, and opens it
 ```
 
 Local builds are signed ad hoc by default, which macOS treats as a new app each
@@ -246,6 +246,7 @@ with Google Chrome into the app icon and the About images.
 | `Resources/` | Info.plist, entitlements, icons. |
 | `docs/` | README images and the website. |
 | `build.sh`, `test.sh` | Build, install, release, and test. |
+| `install.sh`, `test-install.sh` | Install into /Applications, removing only copies that are ForeCal by bundle id; its checks run in throwaway folders. |
 
 ## Contributing
 

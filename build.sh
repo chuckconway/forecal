@@ -1,6 +1,6 @@
 #!/bin/bash
 # Builds ForeCal.app into ./build.
-#   --install   copy it to ~/Applications and launch it
+#   --install   install it to /Applications (see install.sh) and launch that copy
 #   --release   sign with Developer ID, notarize, and write build/ForeCal.zip
 #   --appstore  sign for the Mac App Store and write build/ForeCal.pkg
 #   --snapshot <dir>, --hover-test <file>   run the snapshot tools (see Snapshot.swift)
@@ -144,11 +144,12 @@ if [[ "${1:-}" == "--snapshot" || "${1:-}" == "--hover-test" ]]; then
 fi
 
 if [[ "${1:-}" == "--install" ]]; then
+    ./test-install.sh
     pkill -x ForeCal || true
     # Launching while the old copy is still quitting fails with error -600.
     while pgrep -x ForeCal >/dev/null; do sleep 0.2; done
-    mkdir -p ~/Applications
-    rm -rf ~/Applications/ForeCal.app
-    cp -R "$APP" ~/Applications/
-    open ~/Applications/ForeCal.app
+    ./install.sh "$APP"
+    # Launch the installed copy, never build/: launching registers an app with
+    # LaunchServices, which is how duplicate registrations appeared.
+    open /Applications/ForeCal.app
 fi
