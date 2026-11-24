@@ -64,7 +64,7 @@ struct AboutView: View {
 
             VStack(alignment: .leading, spacing: 10) {
                 AboutRow(symbol: "lock", text: "Read-only. ForeCal never changes your calendars, and has no server of its own.")
-                AboutRow(symbol: "cloud.sun", text: "Weather from Open-Meteo, sent your location rounded to about 1 km.") {
+                AboutRow(symbol: "cloud.sun", text: "Weather and sunrise times from Open-Meteo, sent your location rounded to about 1 km.") {
                     Link("open-meteo.com", destination: URL(string: "https://open-meteo.com")!)
                 }
                 AboutRow(symbol: "car", text: "Drive times from Apple Maps, which receives your location and the address of in-person events.")

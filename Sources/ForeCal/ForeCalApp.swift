@@ -19,6 +19,7 @@ struct ForeCalApp: App {
         _weather = StateObject(wrappedValue: weather)
         _travel = StateObject(wrappedValue: travel)
         ScrollSpeed.install()
+        if live { LoginItem.followMove() }
         if let file = Snapshot.hoverTestOutput {
             Snapshot.runHoverTest(to: file, store: calendar, weather: weather, travel: travel)
         }

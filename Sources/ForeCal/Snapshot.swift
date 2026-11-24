@@ -250,9 +250,12 @@ enum Snapshot {
         let today = Calendar.current.startOfDay(for: store.now)
         weather.showSample(Dictionary(uniqueKeysWithValues: (0..<16).map { offset in
             let day = pattern[offset % pattern.count]
+            let date = Calendar.current.date(byAdding: .day, value: offset, to: today)!
             return (
-                Calendar.current.date(byAdding: .day, value: offset, to: today)!,
-                DailyForecast(code: day.code, high: day.high, low: day.low, precipitationChance: day.rain)
+                date,
+                DailyForecast(code: day.code, high: day.high, low: day.low, precipitationChance: day.rain,
+                              sunrise: Calendar.current.date(bySettingHour: 6, minute: 43 + offset / 2, second: 0, of: date),
+                              sunset: Calendar.current.date(bySettingHour: 16, minute: 55 - offset / 3, second: 0, of: date))
             )
         }))
     }
